@@ -23,7 +23,7 @@ jobs:
           echo '${{ env.conf }}'
       - name: ok
         run: |
-          echo "$GITHUB_ENV"
+          echo "$GITHUB_CONTEXT"
 
   deploy:
     needs: setup_nginx
