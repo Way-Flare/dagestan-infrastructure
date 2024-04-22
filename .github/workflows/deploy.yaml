@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout the repo
-        run: actions/checkout@v3
+        uses: actions/checkout@v3
       - name: set nginx conf as a variable
         run: |
           conf='cat nginx.conf'
