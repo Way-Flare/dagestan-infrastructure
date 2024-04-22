@@ -21,6 +21,9 @@ jobs:
             echo EOF
           } >> "$GITHUB_ENV"
           echo '${{ env.conf }}'
+      - name: test
+        run: |
+          echo ./nginx.conf
 
   deploy:
     needs: setup_nginx
