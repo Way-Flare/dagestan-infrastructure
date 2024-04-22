@@ -23,7 +23,7 @@ jobs:
           echo '${{ env.conf }}'
       - name: test
         run: |
-          echo '${{ env.conf }}'
+          ${{ env.conf }}
 
   deploy:
     needs: setup_nginx
