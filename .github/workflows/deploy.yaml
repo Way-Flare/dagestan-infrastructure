@@ -14,6 +14,7 @@ jobs:
       - name: checkout the repo
         uses: actions/checkout@v3
       - name: set nginx conf as a variable
+        id: ok
         run: |
           {
             echo 'conf<<EOF'
@@ -21,9 +22,6 @@ jobs:
             echo EOF
           } >> '$GITHUB_ENV'
           echo '${{ env.conf }}'
-      - name: ok
-        run: |
-          echo "$GITHUB_CONTEXT"
 
   deploy:
     needs: setup_nginx
@@ -31,10 +29,12 @@ jobs:
     steps:
       - name: nginx rebuilt
         uses: appleboy/ssh-action@master
+        env: ${{ env.conf }} 
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.HOST_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo '${{ env.conf }}' > new_nginx.conf
+            echo '${{ steps.ok.outputs.conf }}' > new_nginx.conf
+
 
