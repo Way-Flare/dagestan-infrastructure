@@ -15,8 +15,10 @@ jobs:
         uses: actions/checkout@v3
       - name: set nginx conf as a variable
         run: |
-          conf=$(cat nginx.conf)
-          echo '$conf' >> $GITHUB_ENV
+          {
+            conf=$(cat nginx.conf)
+            echo '$conf' 
+          } >> "$GITHUB_ENV"
 
   deploy:
     needs: setup_nginx
