@@ -3,7 +3,7 @@ name: deploy nginx confs
 on:
   push:
     branches:
-      - "dev"
+      - 'dev'
   workflow_dispatch:
 
 
@@ -19,11 +19,11 @@ jobs:
             echo 'conf<<EOF'
             cat ./nginx.conf
             echo EOF
-          } >> "$GITHUB_ENV"
+          } >> '$GITHUB_ENV'
           echo '${{ env.conf }}'
       - name: test
         run: |
-          ${{ env.conf }}
+          '${{ env.conf }}'
 
   deploy:
     needs: setup_nginx
