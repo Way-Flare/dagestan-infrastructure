@@ -16,7 +16,7 @@ jobs:
       - name: set nginx conf as a variable
         run: |
           conf='cat nginx.conf'
-          echo $conf
+          echo '$conf'
 
   deploy:
     needs: setup_nginx
