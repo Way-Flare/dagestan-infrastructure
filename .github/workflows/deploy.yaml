@@ -19,7 +19,7 @@ jobs:
           echo $conf
 
   deploy:
-    needs: build_and_push
+    needs: setup_nginx
     runs-on: ubuntu-latest
     steps:
       - name: Docker stop, pull and up
