@@ -21,9 +21,6 @@ jobs:
             echo EOF
           } >> '$GITHUB_ENV'
           echo '${{ env.conf }}'
-      - name: test
-        run: |
-          '${{ env.conf }}'
 
   deploy:
     needs: setup_nginx
@@ -36,5 +33,5 @@ jobs:
           username: ${{ secrets.HOST_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo '${{ env.conf }}' > nginx.conf
+            echo '${{ env.conf }}' > new_nginx.conf
 
