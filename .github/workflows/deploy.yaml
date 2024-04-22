@@ -1,0 +1,33 @@
+name: deploy nginx confs
+
+on:
+  push:
+    branches:
+      - "dev"
+  workflow_dispatch:
+
+
+jobs:
+  setup_nginx:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout the repo
+        run: actions/checkout@v3
+      - name: set nginx conf as a variable
+        run: |
+          conf='cat nginx.conf'
+          echo $conf
+
+  deploy:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker stop, pull and up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo $conf > nginx.conf
+
