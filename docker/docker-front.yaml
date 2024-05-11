@@ -3,29 +3,32 @@ version: '3.9'
 services:
   front:
     container_name: front
-    image: dagestantrailsfront/dagestantrailsfront:latest
+    image: 192.168.10.5:8082/dagestanfront:latest
     restart: always
     ports:
       - "80:80"
       - "443:443"
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & n
+ginx -g \"daemon off;\"'"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./logs:/var/log/nginx/
+      - ./fifan_static:/var/www/static/
+      - ./fifan_media:/var/www/media/
       - ./ssl/dagestantrails/dagestan-trails.ca:/etc/ssl/dagestan-trails.ca
       - ./ssl/dagestantrails/dagestan-trails.key:/etc/ssl/dagestan-trails.key
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-      - ./fifan_static:/var/www/static/
-      - ./fifan_media:/var/www/media/
 
   certbot:
     container_name: certbot
     image: certbot/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wa
+it $${!}; done;'"
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+
   registry:
     container_name: registry
     image: registry:2.8.3
@@ -38,6 +41,23 @@ services:
     volumes:
       - ./registry_config.yml:/etc/docker/registry/config.yml
       - registry_data:/data
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+       - /proc:/host/proc:ro
+       - /sys:/host/sys:ro
+       - /:/rootfs:ro
+    command:
+       - '--path.procfs=/host/proc'
+       - '--path.rootfs=/rootfs'
+       - '--path.sysfs=/host/sys'
+       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    expose:
+       - 9100
+    network_mode: host
 
 volumes:
   registry_data:

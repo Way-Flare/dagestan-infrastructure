@@ -1,0 +1,8 @@
+/docker/.env
+/terraform-configs/ssh-keys.txt
+/terraform-configs/.terraform.lock.hcl
+/terraform-configs/terraform.tfstate
+/terraform-configs/terraform.tfstate.backup
+/terraform-configs/variables.tf
+/terraform-configs/.terraform/
+.venv

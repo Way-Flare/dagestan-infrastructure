@@ -1,0 +1,5 @@
+- name: install docker to hosts
+  ansible.builtin.apt:
+    name: docker-compose
+    state: present
+    
