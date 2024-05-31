@@ -1,3 +1,4 @@
 {
-	"registry-mirrors": ["http://:5000"]
+	  "insecure-registries": ["192.168.10.5:8082"],
+	  "registry-mirrors": ["https://mirror.gcr.io"]
 }
