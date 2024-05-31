@@ -21,3 +21,11 @@ resource "yandex_compute_disk" "boot-disk-for-monitoring" {
   size     = "20"
   image_id = "fd89n8278rhueakslujo"
 }
+
+resource "yandex_compute_disk" "boot-disk-for-nexus" {
+  name     = "boot-disk-for-nexus"
+  type     = "network-hdd"
+  zone     = "ru-central1-b"
+  size     = "20"
+  image_id = "fd89n8278rhueakslujo"
+}

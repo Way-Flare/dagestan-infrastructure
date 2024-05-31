@@ -10,3 +10,7 @@ output "disk-monitoring" {
   value = yandex_compute_disk.boot-disk-for-monitoring.id
 }
 
+output "disk-nexus" {
+  value = yandex_compute_disk.boot-disk-for-nexus.id
+}
+

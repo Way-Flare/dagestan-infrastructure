@@ -147,3 +147,46 @@ write_files:
 EOT
  }
 }
+
+resource "yandex_compute_instance" "vm-4" {
+  name = "nexus"
+
+  resources {
+    cores  = 4
+    memory = 4
+  }
+
+  boot_disk {
+    disk_id = module.disks.disk-nexus
+  }
+
+  network_interface {
+    subnet_id = module.network.subnet-id
+    nat       = true
+  }
+
+  metadata = {
+     user-data = <<-EOT
+#cloud-config
+datasource:
+  Ec2:
+    strict_id: false
+ssh_pwauth: no
+serial-port-enable: 1
+users:
+- name: fifan
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  shell: /bin/bash
+  ssh_authorized_keys:
+  - ${var.ssh-key}
+write_files:
+- path: /usr/share/scripts/install-docker.sh
+  permissions: '0544'
+  content: |
+    sudo apt update
+    sudo apt install -y docker docker-compose
+    sudo gpasswd -a fifan docker
+#cloud-config
+EOT
+ }
+}

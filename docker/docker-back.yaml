@@ -22,7 +22,7 @@ services:
 
   backend:
     container_name: backend
-    image: dagestantrails/dagestantrails:latest
+    image: 192.168.10.5:8082/dagestanback:latest
     env_file: .env
     command: sh -c "
       python manage.py collectstatic --noinput &&
