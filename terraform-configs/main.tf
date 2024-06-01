@@ -37,16 +37,6 @@ users:
   shell: /bin/bash
   ssh_authorized_keys:
   - ${var.ssh-key}
-write_files:
-- path: /usr/share/scripts/install-docker.sh
-  permissions: '0544'
-  content: |
-    sudo apt update
-    sudo apt install -y docker docker-compose
-    sudo docker login --username '${var.backaccount}' --password '${var.backpassword}'
-    sudo gpasswd -a fifan docker
-#cloud-config
-EOT
  }
 }
 
@@ -82,17 +72,6 @@ users:
   shell: /bin/bash
   ssh_authorized_keys:
   - ${var.ssh-key}
-write_files:
-- path: /usr/share/scripts/install-docker.sh
-  permissions: '0544'
-  content: |
-    sudo apt update
-    sudo apt install -y docker docker-compose
-    sudo docker login --username '${var.frontaccount}' --password '${var.frontpassword}'
-    sudo gpasswd -a fifan docker
-#cloud-config
-EOT
-    serial-port-enable = "${file("/home/fifan/Development/dagestan-infrastructure/terraform-configs/serial-port-enable.txt")}"
   }
 }
 
@@ -136,14 +115,5 @@ users:
   shell: /bin/bash
   ssh_authorized_keys:
   - ${var.ssh-key}
-write_files:
-- path: /usr/share/scripts/install-docker.sh
-  permissions: '0544'
-  content: |
-    sudo apt update
-    sudo apt install -y docker docker-compose
-    sudo gpasswd -a fifan docker
-#cloud-config
-EOT
  }
 }
