@@ -1,5 +1,4 @@
-#!/user/bin/env python3
-
+#!/usr/bin/env python3
 import json
 import sys
 import os
@@ -25,23 +24,22 @@ def main():
 
     for instance in instances:
         ip_address = None
-        for net_if in instance.network_interfaces:
-            if net_if.primary_v4_address is not None:
-                ip_address = net_if.primary_v4_address.one_to_one_nat.address
-                print(net_if.primary_v4_address)
-                hostname = instance.labels.get("hostname", instance.id)
-                inventory["_meta"]["hostvars"][hostname] = {
-                        "ansible_host": ip_address,
-                        "instance_id": instance.id,
-                        "name": instance.name,
-                        "zone": instance.zone_id
-                        }
-                group = instance.zone_id
-                if group not in inventory:
-                    inventory[group] = {'hosts': []}
-                inventory[group]['hosts'].append(hostname)
+        hostname = instance.labels.get("hostname", instance.id)
+        #inventory["_meta"
+        for network_interface in instance.network_interfaces:
+            ip_address = network_interface.primary_v4_address.address
 
-    print(json.dumps(inventory, indent=2))
+            inventory["_meta"]["hostvars"][hostname] = {
+                    "ansible_host": ip_address,
+                    "instance_id": instance.id,
+                    "name": instance.name,
+                    "zone": instance.zone_id
+                    }
+            group = instance.zone_id
+            if group not in inventory:
+                inventory[group] = {'hosts': []}
+            inventory[group]['hosts'].append(hostname)
+    print(json.dumps(inventory))
 
 if __name__ == "__main__":
     main()
