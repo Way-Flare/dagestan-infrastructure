@@ -12,7 +12,7 @@ load_dotenv()
 def get_hosts():
     yc_sdk = yandexcloud.SDK(token=os.getenv("YC_TOKEN"))
     instance_service = yc_sdk.client(instance_service_pb2_grpc.InstanceServiceStub)
-    folder_id = os.getenv("FOLDER_ID")
+    folder_id = os.getenv("YC_FOLDER_ID")
     response = instance_service.List(ListInstancesRequest(folder_id=folder_id))
 
     return response.instances
@@ -27,7 +27,7 @@ def main():
         hostname = instance.labels.get("hostname", instance.id)
         #inventory["_meta"
         for network_interface in instance.network_interfaces:
-            ip_address = network_interface.primary_v4_address.address
+            ip_address = network_interface.primary_v4_address.one_to_one_nat.address
 
             inventory["_meta"]["hostvars"][hostname] = {
                     "ansible_host": ip_address,

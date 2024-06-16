@@ -2,4 +2,19 @@
   ansible.builtin.apt:
     name: docker-compose
     state: present
+    update_cache: true
     
+- name: add docker to gspw
+  shell:
+    cmd:
+      sudo usermod -aG docker $USER
+  register: result
+
+- name: show result
+  debug:
+    msg: "{{ result.stdout }}"
+
+- name: send daemonjson
+  copy:
+    src: /home/admin/infra/daemon.json
+    dest: /etc/docker/daemon.json
